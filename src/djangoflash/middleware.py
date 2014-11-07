@@ -12,8 +12,6 @@ To plug this middleware to your Django project, edit your project's
     )
 """
 
-from urlparse import urlparse
-
 from django.conf import settings
 from django.core.exceptions import SuspiciousOperation
 from django.core import urlresolvers
