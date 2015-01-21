@@ -109,7 +109,7 @@ class FlashScope(object):
         removed from this flash.
         """
         if not key:
-            for existing_key in self.keys():
+            for existing_key in list(self.keys()):
                 self._update_status(existing_key, is_used)
         else:
             if not is_used:
