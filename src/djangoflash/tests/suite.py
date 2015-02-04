@@ -2,13 +2,17 @@
 
 """Project's test suite.
 """
-
+from __future__ import print_function
+import os
 import sys
 
 # Adds the Django test project to system path
-from django.core.management import setup_environ
-import djangoflash.tests.testproj.settings as project_settings
-sys.path.insert(0, setup_environ(project_settings))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'testproj'))
+sys.path.insert(0, os.path.dirname(__file__))
+os.environ['DJANGO_SETTINGS_MODULE'] = 'testproj.settings'
+import django
+if hasattr(django, 'setup'):
+    django.setup()
 
 # Imports unit tests
 from context_processors import *
@@ -40,4 +44,4 @@ if has_sqlite:
     # Imports integration tests
     from testproj.app.tests import *
 else:
-    print >> sys.stderr, 'Integration: module "sqlite3" (or "pysqlite2") is required... SKIPPED'
+    print('Integration: module "sqlite3" (or "pysqlite2") is required... SKIPPED', file=sys.stderr)

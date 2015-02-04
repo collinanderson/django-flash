@@ -4,9 +4,9 @@
 """
 
 import base64
+import hashlib
 
 from django.conf import settings
-from django.utils.hashcompat import md5_constructor
 
 
 class BaseCodec(object):
@@ -32,7 +32,7 @@ class BaseCodec(object):
         """Returns an encoded-and-signed version of the given *flash*.
         """
         encoded = self.encode(flash)
-        encoded_md5 = md5_constructor(encoded + settings.SECRET_KEY).hexdigest()
+        encoded_md5 = hashlib.md5(encoded + settings.SECRET_KEY).hexdigest()
         return base64.encodestring(encoded + encoded_md5)
 
     def decode_signed(self, encoded_flash):
@@ -40,7 +40,7 @@ class BaseCodec(object):
         """
         decoded_flash = base64.decodestring(encoded_flash)
         encoded, tamper_check = decoded_flash[:-32], decoded_flash[-32:]
-        hex_digest = md5_constructor(encoded + settings.SECRET_KEY).hexdigest()
+        hex_digest = hashlib.md5(encoded + settings.SECRET_KEY).hexdigest()
         if hex_digest != tamper_check:
             from django.core.exceptions import SuspiciousOperation
             raise SuspiciousOperation('User tampered with data.')

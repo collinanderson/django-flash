@@ -11,7 +11,7 @@ from django.test import TestCase
 from djangoflash.context_processors import CONTEXT_VAR
 from djangoflash.middleware import FlashScope
 
-from testproj.app import views
+from . import views
 
 
 class IntegrationTestCase(TestCase):
